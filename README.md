@@ -30,7 +30,68 @@ STEP-8: Repeat the above steps to generate the entire cipher text.
 
 
 ## PROGRAM
-
+```
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+// FuncƟon to generate repeaƟng key
+void generateKey(char message[], char key[], char newKey[]) {
+ int msgLen = strlen(message);
+ int keyLen = strlen(key);
+ int i, j = 0;
+ for(i = 0; i < msgLen; i++) {
+ if(isalpha(message[i])) {
+ newKey[i] = key[j % keyLen];
+ j++;
+ } else {
+ newKey[i] = message[i]; // Keep non-leƩers as they are
+ }
+ }
+ newKey[i] = '\0';
+}
+// EncrypƟon funcƟon
+void encrypt(char message[], char key[], char cipher[]) {
+ int i;
+ for(i = 0; i < strlen(message); i++) {
+ if(isupper(message[i]))
+ cipher[i] = ((message[i] - 'A') + (toupper(key[i]) - 'A')) % 26 + 'A';
+ else if(islower(message[i]))
+ cipher[i] = ((message[i] - 'a') + (tolower(key[i]) - 'a')) % 26 + 'a';
+ else
+ cipher[i] = message[i]; // Non-leƩer characters
+ }
+ cipher[i] = '\0';
+}
+// DecrypƟon funcƟon
+void decrypt(char cipher[], char key[], char message[]) {
+ int i;
+ for(i = 0; i < strlen(cipher); i++) {
+ if(isupper(cipher[i]))
+ message[i] = ((cipher[i] - 'A') - (toupper(key[i]) - 'A') + 26) % 26 + 'A';
+ else if(islower(cipher[i]))
+ message[i] = ((cipher[i] - 'a') - (tolower(key[i]) - 'a') + 26) % 26 + 'a';
+ else
+ message[i] = cipher[i]; // Non-leƩer characters
+ }
+ message[i] = '\0';
+}
+int main() {
+ char message[1000], key[1000], newKey[1000], cipher[1000], decrypted[1000];
+ prinƞ("Enter the message: ");
+ fgets(message, sizeof(message), stdin);
+ message[strcspn(message, "\n")] = '\0'; // Remove newline
+ prinƞ("Enter the key: ");
+ scanf("%s", key);
+ generateKey(message, key, newKey);
+ encrypt(message, newKey, cipher);
+ prinƞ("Encrypted Text: %s\n", cipher);
+ decrypt(cipher, newKey, decrypted);
+ prinƞ("Decrypted Text: %s\n", decrypted);
+return 0;
+}
+```
 ## OUTPUT
+<img width="543" height="407" alt="image" src="https://github.com/user-attachments/assets/012c42d3-60b3-46ac-a347-39fdabd83c32" />
 
 ## RESULT
+Vigenere Cipher substitution technique has been implemented using C program.
